@@ -28,9 +28,9 @@ def collide_with_bullets(group1: pygame.sprite.Group, group2: pygame.sprite.Grou
                     else:
                         score = 20
                 elif isinstance(sprite, Wall):
-                    score = 1
+                    score = 0
                     if sprite.lives == 1:
-                        score += 5
+                        score += 0
                 else:
                     continue
 
