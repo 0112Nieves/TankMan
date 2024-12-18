@@ -164,15 +164,15 @@ class ResupplyEnv(TankManBaseEnv):
         angle_reward: float = 0.0
 
         # the gun angle is point at the right side of the target
-        if obs[0] in [(obs[1] + x) % 8 for x in [5, 6, 7]] and action == 3:
+        if obs[0] in [(obs[1] + x) % 8 for x in [5, 6, 7]] and action == 3: # TURN_LEFT_CMD
             angle_reward = 0.0
-        elif obs[0] in [(obs[1] + x) % 8 for x in [5, 6, 7]] and action == 4:
+        elif obs[0] in [(obs[1] + x) % 8 for x in [5, 6, 7]] and action == 4:   # TURN_RIGHT_CMD
             angle_reward = 0.0
 
         # the gun angle is point at the left side of the target
-        elif obs[0] in [(obs[1] + x) % 8 for x in [1, 2, 3]] and action == 4:
+        elif obs[0] in [(obs[1] + x) % 8 for x in [1, 2, 3]] and action == 4:   # TURN_RIGHT_CMD
             angle_reward = 0.0
-        elif obs[0] in [(obs[1] + x) % 8 for x in [1, 2, 3]] and action == 3:
+        elif obs[0] in [(obs[1] + x) % 8 for x in [1, 2, 3]] and action == 3:   # TURN_LEFT_CMD
             angle_reward = 0.0
         else:
             angle_reward = 0.0
@@ -182,14 +182,14 @@ class ResupplyEnv(TankManBaseEnv):
     def cal_forward_reward(self, obs: dict, action: int) -> float:
         forward_reward: float = 0.0
 
-        if obs[0] == obs[1] and action == 1:
+        if obs[0] == obs[1] and action == 1:    # FORWARD_CMD
             forward_reward = 0.0
-        elif obs[0] == obs[1] and action == 2:
+        elif obs[0] == obs[1] and action == 2:  # BACKWARD_CMD
             forward_reward = 0.0
         
-        elif obs[0] == (obs[1] + 4) % 8 and action == 2:
+        elif obs[0] == (obs[1] + 4) % 8 and action == 2:    # BACKWARD_CMD
             forward_reward = 0.0
-        elif obs[0] == (obs[1] + 4) % 8 and action == 1:
+        elif obs[0] == (obs[1] + 4) % 8 and action == 1:    # FORWARD_CMD
             forward_reward = 0.0
         elif (obs[0] == obs[1] or obs[0] == (obs[1] + 4) % 8) and (action != 1 or action != 2):
             forward_reward = 0.0

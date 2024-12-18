@@ -163,15 +163,15 @@ class ResupplyEnv(TankManBaseEnv):
         angle_reward: float = 0.0
 
         # the gun angle is point at the right side of the target
-        if obs[0] in [(obs[1] + x) % 8 for x in [5, 6, 7]] and action == 1:
+        if obs[0] in [(obs[1] + x) % 8 for x in [5, 6, 7]] and action == 1: # AIM_LEFT_CMD
             angle_reward = 0.0
-        elif obs[0] in [(obs[1] + x) % 8 for x in [5, 6, 7]] and action == 2:
+        elif obs[0] in [(obs[1] + x) % 8 for x in [5, 6, 7]] and action == 2:   # AIM_RIGHT_CMD
             angle_reward = 0.0
 
         # the gun angle is point at the left side of the target
-        elif obs[0] in [(obs[1] + x) % 8 for x in [1, 2, 3]] and action == 2:
+        elif obs[0] in [(obs[1] + x) % 8 for x in [1, 2, 3]] and action == 2:   # AIM_RIGHT_CMD
             angle_reward = 0.0
-        elif obs[0] in [(obs[1] + x) % 8 for x in [1, 2, 3]] and action == 1:
+        elif obs[0] in [(obs[1] + x) % 8 for x in [1, 2, 3]] and action == 1:   # AIM_LEFT_CMD
             angle_reward = 0.0
 
         # the gun angle is point at the opposite side of the target
@@ -183,7 +183,7 @@ class ResupplyEnv(TankManBaseEnv):
     def cal_shoot_reward(self, obs: dict, action: int) -> float:
         shoot_reward: float = 0.0
 
-        if obs[0] == obs[1] and action == 3:
+        if obs[0] == obs[1] and action == 3:    # SHOOT
             shoot_reward = 0.0
         elif action == 3:
             shoot_reward = 0.0
