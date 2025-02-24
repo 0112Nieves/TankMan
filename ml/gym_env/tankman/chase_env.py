@@ -121,18 +121,18 @@ class ResupplyEnv(TankManBaseEnv):
 
         # Return gun_angle and normalized angle_to_target
         obs = np.array([float(tank_angle_index), float(angle_to_target_index)], dtype=np.float32)
-        if self.player == "1P":
-            print("player: " + str(self.player))
-            print("tank_angle: " + str(tank_angle))
-            print("tank_angle_index: " + str(tank_angle_index))
-            print("player_x: " + str(player_x))
-            print("player_y: " + str(player_y))
-            print("target_x: " + str(target_x))
-            print("target_y: " + str(target_y))
-            print("angle_to_target: " + str(angle_to_target))
-            print("angle_to_target_index: " + str(angle_to_target_index))
-            print("obs: " + str(obs))
-            print("\n")
+        # if self.player == "1P":
+            # print("player: " + str(self.player))
+            # print("tank_angle: " + str(tank_angle))
+            # print("tank_angle_index: " + str(tank_angle_index))
+            # print("player_x: " + str(player_x))
+            # print("player_y: " + str(player_y))
+            # print("target_x: " + str(target_x))
+            # print("target_y: " + str(target_y))
+            # print("angle_to_target: " + str(angle_to_target))
+            # print("angle_to_target_index: " + str(angle_to_target_index))
+            # print("obs: " + str(obs))
+            # print("\n")
         return obs
 
     def _get_obs(self) -> np.ndarray:
@@ -160,20 +160,23 @@ class ResupplyEnv(TankManBaseEnv):
         return total_reward
 
     def cal_angle_reward(self, obs: dict, action: int) -> float:
-
         angle_reward: float = 0.0
 
+        # 碰撞偵測
+        # player_x = self._scene_info[self.player].get("x", 0)
+        # player_y = self._scene_info[self.player].get("y", 0)
+        # if player_x <= 50 or player_x >= 950 or player_y <= 50 or player_y >= 550:
+        #     angle_reward = -5.0 
+        # else:
         # the gun angle is point at the right side of the target
         if obs[0] in [(obs[1] + x) % 8 for x in [5, 6, 7]] and action == 3: # TURN_LEFT_CMD
-            angle_reward = 0.0
+            angle_reward = 1.0
         elif obs[0] in [(obs[1] + x) % 8 for x in [5, 6, 7]] and action == 4:   # TURN_RIGHT_CMD
-            angle_reward = 0.0
-
-        # the gun angle is point at the left side of the target
+            angle_reward = -1.0
         elif obs[0] in [(obs[1] + x) % 8 for x in [1, 2, 3]] and action == 4:   # TURN_RIGHT_CMD
-            angle_reward = 0.0
+            angle_reward = 1.0
         elif obs[0] in [(obs[1] + x) % 8 for x in [1, 2, 3]] and action == 3:   # TURN_LEFT_CMD
-            angle_reward = 0.0
+            angle_reward = -1.0
         else:
             angle_reward = 0.0
         
@@ -181,16 +184,20 @@ class ResupplyEnv(TankManBaseEnv):
     
     def cal_forward_reward(self, obs: dict, action: int) -> float:
         forward_reward: float = 0.0
-
+        # 碰撞偵測
+        # player_x = self._scene_info[self.player].get("x", 0)
+        # player_y = self._scene_info[self.player].get("y", 0)
+        # if (player_x <= 50 or player_x >= 950 or player_y <= 50 or player_y >= 550) and action == 1:
+        #     forward_reward = -5.0  
+        # else:
         if obs[0] == obs[1] and action == 1:    # FORWARD_CMD
-            forward_reward = 0.0
+            forward_reward = 1.0
         elif obs[0] == obs[1] and action == 2:  # BACKWARD_CMD
-            forward_reward = 0.0
-        
+            forward_reward = -1.0
         elif obs[0] == (obs[1] + 4) % 8 and action == 2:    # BACKWARD_CMD
-            forward_reward = 0.0
+            forward_reward = -1.0
         elif obs[0] == (obs[1] + 4) % 8 and action == 1:    # FORWARD_CMD
-            forward_reward = 0.0
+            forward_reward = 1.0
         elif (obs[0] == obs[1] or obs[0] == (obs[1] + 4) % 8) and (action != 1 or action != 2):
             forward_reward = 0.0
         return forward_reward

@@ -89,7 +89,7 @@ def train(opts: Namespace) -> None:
     print(model.policy)
 
     # Logger
-    log_path = f"log/sb3/train_resupply_{time.strftime('%b%d_%Y_%H-%M-%S')}"
+    log_path = f"log/sb3/train_resupply_{time.strftime('%b%d_%Y_%H-%M-%S-chase')}"
     logger = configure(log_path, ["stdout", "tensorboard"])
     model.set_logger(logger)
 
